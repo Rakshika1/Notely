@@ -26,7 +26,7 @@ file(GLOB_RECURSE SOURCES
 
 
 # Add the executable
-add_executable(${project} ${SOURCES})
+add_executable(${project} ${SOURCES} "src/todo.cpp" "include/todo.h")
 
 #target_include_directories(${project})
 target_link_libraries(${project} PRIVATE glfw opengl32.lib) #incase of windows use opengl32.lib and use here or GL for linux
