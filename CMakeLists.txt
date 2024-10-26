@@ -26,7 +26,7 @@ file(GLOB_RECURSE SOURCES
 
 
 # Add the executable
-add_executable(${project} ${SOURCES})
+add_executable(${project} ${SOURCES} "src/todo.cpp" "include/todo.h")
 
 #target_include_directories(${project})
 if(WIN32)
