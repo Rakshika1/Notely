@@ -3,6 +3,8 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 #include <stdio.h>
+#include <vector>
+#include <string>
 #include "todo.h"
 #define GL_SILENCE_DEPRECATION
 #include <GLFW/glfw3.h> // Will drag system OpenGL headers
@@ -21,6 +23,12 @@ int main(int, char**) {
     const char* glsl_version = "#version 130";
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+    glfwWindowHint(GLFW_DECORATED, GLFW_TRUE);  // Keep window decorations
+    glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE);
+    
+    // Set fixed window size
+    const int windowWidth = 800;
+    const int windowHeight = 600;
 
     // Create window with graphics context
     GLFWwindow* window = glfwCreateWindow(800, 600, "To-Do App", nullptr, nullptr);
@@ -62,10 +70,17 @@ int main(int, char**) {
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
+        int display_w, display_h;
+        glfwGetFramebufferSize(window, &display_w, &display_h);
+        float font_scale = display_w / 800.0f; // Adjust based on a base width of 800
+        ImGui::GetIO().FontGlobalScale = font_scale;
+
 
         // Create the main window with the title "To-Do App"
-        ImGui::SetWindowSize(ImVec2(800, 600));
-        ImGui::Begin("To-Do App");
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::SetNextWindowSize(ImVec2(display_w, display_h));
+
+        ImGui::Begin("To-Do App", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_NoMove|ImGuiWindowFlags_NoScrollbar|ImGuiWindowFlags_NoScrollWithMouse);
 
         // Section title
         ImGui::Text("My To-Do List");
@@ -82,7 +97,8 @@ int main(int, char**) {
 
         // Task List Section
         ImGui::Text("Tasks:");
-        ImGui::BeginChild("TaskList", ImVec2(0, 400), true);
+        ImVec2 availableSpace = ImGui::GetContentRegionAvail();
+        ImGui::BeginChild("TaskList", ImVec2(availableSpace.x, availableSpace.y), true);
 
         // Display tasks
         int taskNumber = 1; // For numbering tasks
@@ -115,9 +131,12 @@ int main(int, char**) {
 
         // Rendering
         ImGui::Render();
-        int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
         glViewport(0, 0, display_w, display_h);
+
+
+
+
         glClearColor(0.15f, 0.18f, 0.2f, 1.00f); // Background color
         glClear(GL_COLOR_BUFFER_BIT);
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
