@@ -29,7 +29,11 @@ file(GLOB_RECURSE SOURCES
 add_executable(${project} ${SOURCES} "src/todo.cpp" "include/todo.h")
 
 #target_include_directories(${project})
-target_link_libraries(${project} PRIVATE glfw opengl32.lib) #incase of windows use opengl32.lib and use here or GL for linux
+if(WIN32)
+    target_link_libraries(${project} PRIVATE glfw opengl32.lib)
+elseif(UNIX)
+    target_link_libraries(${project} PRIVATE glfw GL)
+endif()
 #target_link_directories(${project} PRIVATE libs/lib-vc2010-64)
 
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
