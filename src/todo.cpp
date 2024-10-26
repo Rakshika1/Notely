@@ -18,6 +18,6 @@ void addTask() {
 void removeTask(int index) {
     if (index >= 0 && index < tasks.size()) {
         tasks.erase(tasks.begin() + index);
-        taskStatus.erase(taskStatus.begin() + index); // Remove corresponding status
+        /* taskStatus.erase(taskStatus.begin() + index); // Remove corresponding status */
     }
 }

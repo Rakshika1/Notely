@@ -31,7 +31,7 @@ int main(int, char**) {
     const int windowHeight = 600;
 
     // Create window with graphics context
-    GLFWwindow* window = glfwCreateWindow(800, 600, "To-Do App", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow( windowWidth,  windowHeight, "To-Do App", nullptr, nullptr);
     if (window == nullptr)
         return 1;
     glfwMakeContextCurrent(window);
@@ -45,7 +45,7 @@ int main(int, char**) {
     // Customizing ImGui style
     ImGui::StyleColorsDark();
     ImGuiStyle& style = ImGui::GetStyle();
-    style.WindowRounding = 10.0f; // Round window corners
+    style.WindowRounding = 0.0f; // Round window corners
     style.FrameRounding = 5.0f; // Round frame corners
     style.ItemSpacing = ImVec2(10, 10); // Spacing between items
 
@@ -72,7 +72,7 @@ int main(int, char**) {
         ImGui::NewFrame();
         int display_w, display_h;
         glfwGetFramebufferSize(window, &display_w, &display_h);
-        float font_scale = display_w / 800.0f; // Adjust based on a base width of 800
+        float font_scale = display_w / windowWidth; // Adjust based on a base width of 800
         ImGui::GetIO().FontGlobalScale = font_scale;
 
 
@@ -106,7 +106,7 @@ int main(int, char**) {
             bool isCompleted = (taskStatus[i] == 1); // Get completion status
 
             // Display only incomplete tasks first
-            if (!isCompleted) {
+            if (true) {
                 if (ImGui::Checkbox(("##check" + std::to_string(i)).c_str(), &isCompleted)) {
                     taskStatus[i] = isCompleted ? 1 : 0; // Update task status
                 }
@@ -120,11 +120,11 @@ int main(int, char**) {
         }
 
         // Display completed tasks next
-        for (int i = 0; i < tasks.size(); i++) {
-            if (taskStatus[i] == 1) { // Completed task
-                ImGui::Text("%d. %s (Completed)", taskNumber++, tasks[i].c_str()); // Display completed task with numbering
-            }
-        }
+        /* for (int i = 0; i < tasks.size(); i++) { */
+        /*     if (taskStatus[i] == 1) { // Completed task */
+        /*         ImGui::Text("%d. %s (Completed)", taskNumber++, tasks[i].c_str()); // Display completed task with numbering */
+        /*     } */
+        /* } */
 
         ImGui::EndChild();
         ImGui::End();
